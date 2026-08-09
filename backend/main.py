@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers import auth, tasks
 from core.config import settings
 
+import os
+
 app = FastAPI(title=settings.PROJECT_NAME)
 
 # Setup CORS
@@ -10,7 +12,11 @@ origins = [
     "http://localhost",
     "http://localhost:5173", # Default Vite port
     "http://127.0.0.1:5173",
+    "http://localhost:3000",
 ]
+env_origins = os.getenv("ALLOWED_ORIGINS", "")
+if env_origins:
+    origins.extend([o.strip() for o in env_origins.split(",") if o.strip()])
 
 app.add_middleware(
     CORSMiddleware,
