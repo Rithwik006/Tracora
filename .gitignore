@@ -36,6 +36,7 @@ env.bak/
 venv.bak/
 backend/venv/
 backend/env/
+.pytest_cache/
 
 # ─── SQLite Databases ──────────────────────
 *.db

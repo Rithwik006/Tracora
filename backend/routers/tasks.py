@@ -40,6 +40,17 @@ def clear_completed_tasks(
     count = crud.delete_completed_tasks(db, user_id=current_user.id)
     return {"message": f"Deleted {count} completed tasks", "deleted_count": count}
 
+@router.get("/{task_id}", response_model=schemas.TaskResponse)
+def read_task(
+    task_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    task = crud.get_task(db, task_id=task_id, user_id=current_user.id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return task
+
 @router.put("/{task_id}", response_model=schemas.TaskResponse)
 def update_task(
     task_id: int,

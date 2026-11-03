@@ -37,6 +37,7 @@ def upgrade() -> None:
     sa.Column('priority', sa.String(), nullable=True),
     sa.Column('is_completed', sa.Boolean(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('due_date', sa.DateTime(), nullable=True),
     sa.Column('owner_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

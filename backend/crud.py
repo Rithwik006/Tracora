@@ -51,10 +51,17 @@ def get_tasks(
         query = query.filter(models.Task.is_completed == False)
     elif status == 'overdue':
         now = datetime.now()
-        query = query.filter(models.Task.is_completed == False, models.Task.due_date < now)
+        query = query.filter(
+            models.Task.is_completed == False,
+            models.Task.due_date.isnot(None),
+            models.Task.due_date < now
+        )
 
 
     return query.order_by(models.Task.id.desc()).offset(skip).limit(limit).all()
+
+def get_task(db: Session, task_id: int, user_id: int):
+    return db.query(models.Task).filter(models.Task.id == task_id, models.Task.owner_id == user_id).first()
 
 def create_user_task(db: Session, task: schemas.TaskCreate, user_id: int):
     db_task = models.Task(**task.model_dump(), owner_id=user_id)

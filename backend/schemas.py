@@ -1,6 +1,6 @@
 from typing import List, Optional
 from datetime import datetime
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 
 # Token
 class Token(BaseModel):
@@ -12,12 +12,12 @@ class TokenData(BaseModel):
 
 class PasswordChange(BaseModel):
     old_password: str
-    new_password: str
+    new_password: str = Field(..., min_length=4, max_length=72, description="Password must be between 4 and 72 characters")
 
 
 # Task
 class TaskBase(BaseModel):
-    title: str
+    title: str = Field(..., min_length=1, max_length=255)
     description: Optional[str] = None
     priority: Optional[str] = "medium"
     due_date: Optional[datetime] = None
@@ -27,7 +27,7 @@ class TaskCreate(TaskBase):
 
 # TaskUpdate: all fields optional so partial updates (e.g. just is_completed) work correctly
 class TaskUpdate(BaseModel):
-    title: Optional[str] = None
+    title: Optional[str] = Field(None, min_length=1, max_length=255)
     description: Optional[str] = None
     priority: Optional[str] = None
     due_date: Optional[datetime] = None
@@ -39,20 +39,18 @@ class TaskResponse(TaskBase):
     created_at: datetime
     owner_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # User
 class UserBase(BaseModel):
     email: EmailStr
 
 class UserCreate(UserBase):
-    password: str
+    password: str = Field(..., min_length=4, max_length=72, description="Password must be between 4 and 72 characters")
 
 class UserResponse(UserBase):
     id: int
     is_active: bool
     tasks: List[TaskResponse] = []
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

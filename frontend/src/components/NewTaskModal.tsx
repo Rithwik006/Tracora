@@ -12,7 +12,10 @@ const priorityOptions = ['low', 'medium', 'high'] as const;
 
 function getInitialState() {
   const now = new Date();
-  const dateVal = now.toISOString().slice(0, 10);
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const dateVal = `${year}-${month}-${day}`;
   let h = now.getHours();
   const ampmVal: 'AM' | 'PM' = h >= 12 ? 'PM' : 'AM';
   h = h % 12;

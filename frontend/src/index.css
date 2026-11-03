@@ -34,9 +34,15 @@ html, body {
   box-shadow: 0 4px 24px rgba(0,0,0,0.35);
 }
 
-/* ─── Hide native cursor ────────────────────────────── */
-body, button, a, [data-cursor-hover] { cursor: none; }
-input, textarea { cursor: text; }
+/* ─── Hide native cursor on devices with fine pointer ─ */
+@media (hover: hover) and (pointer: fine) {
+  body, button, a, [data-cursor-hover] { cursor: none; }
+  input, textarea { cursor: text; }
+}
+
+@media (pointer: coarse) {
+  .custom-cursor-elem { display: none !important; }
+}
 
 /* ─── Background animated blobs ─────────────────────── */
 /* All GPU-composited via transform + opacity only */

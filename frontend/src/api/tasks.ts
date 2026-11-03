@@ -22,7 +22,7 @@ export interface TaskUpdate {
   title?: string;
   description?: string;
   priority?: string;
-  due_date?: string;
+  due_date?: string | null;
   is_completed?: boolean;
 }
 

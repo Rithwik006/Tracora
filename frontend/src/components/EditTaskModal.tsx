@@ -13,7 +13,10 @@ const priorityOptions = ['low', 'medium', 'high'] as const;
 
 function parseInitialState(isoString?: string) {
   const d = isoString ? new Date(isoString) : new Date();
-  const dateVal = d.toISOString().slice(0, 10);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const dateVal = `${year}-${month}-${day}`;
   let h = d.getHours();
   const ampmVal: 'AM' | 'PM' = h >= 12 ? 'PM' : 'AM';
   h = h % 12;
@@ -102,7 +105,7 @@ export default function EditTaskModal({ task, onClose, onUpdated }: EditTaskModa
     setLoading(true);
     setError('');
     try {
-      const localDueDate = dueDate ? (dueDate.length === 16 ? `${dueDate}:00` : dueDate) : undefined;
+      const localDueDate = dueDate ? (dueDate.length === 16 ? `${dueDate}:00` : dueDate) : null;
       await updateTask(task.id, {
         title: title.trim(),
         description: description.trim() || undefined,

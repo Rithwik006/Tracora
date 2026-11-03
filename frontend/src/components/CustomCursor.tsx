@@ -5,6 +5,10 @@ export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
+      return;
+    }
+
     let mouseX = 0, mouseY = 0;
     let ringX = 0, ringY = 0;
     let rafId: number;
@@ -79,6 +83,7 @@ export default function CustomCursor() {
       {/* Lagging ring */}
       <div
         ref={ringRef}
+        className="custom-cursor-elem"
         style={{
           position: 'fixed', top: '-16px', left: '-16px',
           width: '32px', height: '32px',
@@ -93,6 +98,7 @@ export default function CustomCursor() {
       {/* Instant dot */}
       <div
         ref={dotRef}
+        className="custom-cursor-elem"
         style={{
           position: 'fixed', top: '-3px', left: '-3px',
           width: '6px', height: '6px',
